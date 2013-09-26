@@ -18,6 +18,11 @@
 ;;;; returning a sexp containing the values with strings converted to
 ;;;; numbers where appropriate."
 ;;;;   (-map (lambda (s) (-map 'reformat-field (s-split "\t" s))) (s-lines tsv)))
+;;
+;; I copied the data to emacs' *scratch* buffer, wrapped it in quotes, and applied the function like so:
+;; (tsv-to-sexp <quoted data>)
+;;
+;; I copied the evaluation of that expression to here.
 
 (def location-data
   '(("AL" 439 270)
