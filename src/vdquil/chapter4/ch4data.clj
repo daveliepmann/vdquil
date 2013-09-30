@@ -1,15 +1,6 @@
-;; Ben Fry's Visualizing Data, Chapter 4 (Time Series), figure 1:
-;; One set of points over time
-;; Converted from Processing to Quil as an exercise by Dave Liepmann
+;; Data for exercises in Chapter 4
 
-(ns vdquil.ch4_fig1
-  (:use quil.core)
-  (require [clojure.set :refer [union]]))
-
-;; Color conversion function, courtesy of Jack Rusher
-(defn hex-to-rgb [hex]
-  (map (comp #(Integer/parseInt % 16) (partial apply str))
-       (partition 2 (.replace hex "#" ""))))
+(ns vdquil.chapter4.ch4data)
 
 ;; Data (locations, names) was extracted from the supplied TSV files
 ;; interactively in emacs using Jack Rusher's tsv-to-sexp lisp function:
@@ -117,41 +108,3 @@
     (2002 21.9 7.8 18.1)
     (2003 21.6 7.5 18.5)
     (2004 21.2 7.3 18.8)))
-
-(defn setup []
-  (set-state!
-   :ymtc (atom (rest milk-tea-coffee-data))))
-
-(defn draw []
-  (background 224)
-  (smooth)
-  
-  ;; Show the plot area as a white box
-  (fill 255)
-  (no-stroke)
-  (rect-mode :corners)
-  (rect 50 60 (- (width) 50) (- (height) 60))
-
-  ;; Plot data
-  (stroke-weight 5)
-  (stroke (color (first (hex-to-rgb "#5679C1")) (second (hex-to-rgb "#5679C1")) (nth (hex-to-rgb "#5679C1") 2)))
-  (doseq [row @(state :ymtc)]
-    (let [year (first row)
-          milk (second row)
-          tea (nth row 2)
-          coffee (nth row 3)
-          year-min (apply min (map #(first %) @(state :ymtc))) 
-          year-max (apply max (map #(first %) @(state :ymtc)))
-          data-min (apply min (union (map #(second %) @(state :ymtc)) (map #(nth % 2) @(state :ymtc)) (map #(nth % 3) @(state :ymtc)))) 
-          data-max (apply max (union (map #(second %) @(state :ymtc)) (map #(nth % 2) @(state :ymtc)) (map #(nth % 3) @(state :ymtc))))
-          ]
-      (point (map-range year year-min year-max 50 (- (width) 50))  (map-range milk data-min data-max (- (height) 60) 60))
-      )
-    )
-  )
-
-(defsketch mtc
-  :title "Milk, Tea, Coffee"
-  :setup setup
-  :draw draw
-  :size [720, 400])
