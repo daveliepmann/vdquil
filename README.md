@@ -7,4 +7,4 @@ Visualizing Data (in Quil!)
 
 Similar work has been done with Matt Pearson's [Generative Art](https://github.com/quil/quil/blob/master/examples/gen_art/README.md).
 
-My goal is to match Processing code's output exactly, write idiomatic Clojure, and maximally retain comments from the original Processing. If you find an error (or even something non-idiomatic to Clojure) please contact me on github or via email (first name, period, last name, gmail).
+My goal is to match Processing code's output exactly and write idiomatic Clojure. If you find an error (or even something non-idiomatic to Clojure) please contact me on github or via email (first name, period, last name, gmail).

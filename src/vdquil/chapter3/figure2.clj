@@ -9,25 +9,29 @@
 
 (defn setup []
   (background 255)
-  (set-state!
-   :img (load-image "map.png")))
+  (smooth)
+  (no-stroke)
+  (set-state! :img (load-image "map.png"))
+  (fill 192 0 0))
+
+(defn create-ellipse [location]
+  (let [[abbrev [x y]] location
+        random-value (random-data abbrev)
+        ;; to produce figure 1, use "radius 9" instead of the following 3 lines
+        radius (if (>= random-value 0)
+                 (map-range random-value 0 (apply max (map second random-data)) 2 40)
+                 (map-range random-value 0 (apply min (map second random-data)) 2 40))]
+    (ellipse x y radius radius)))
 
 (defn draw []
-  (image (state :img) 0 0)  
-  (doseq [location location-data]    
-    (let [[abbrev [x y]] location
-          random-value (random-data abbrev)
-          ;; to produce figure 1, use "radius 9" instead of the following 3 lines
-          radius (if (>= random-value 0)
-                   (map-range random-value 0 (apply max (map second random-data)) 2 40)
-                   (map-range random-value 0 (apply min (map second random-data)) 2 40))]
-      (smooth)
-      (no-stroke)
-      (fill 192 0 0)  
-      (ellipse x y radius radius))))
+  (image (state :img) 0 0)
+  (loop [rows location-data]
+    (if (seq rows)
+      (do (create-ellipse (first rows))
+          (recur (rest rows))))))
 
-(defsketch ch3_map
+(defsketch ch3-fig2
   :title "Map"
   :setup setup
   :draw draw
-  :size [640,400])
+  :size [640 400])
