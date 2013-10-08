@@ -48,7 +48,7 @@
     (if (seq rows)
       (do (create-ellipse (first rows))
           (recur (rest rows)))))
-  ;; Use the values set inside doseq to draw text related to the closest circle:
+  ;; Use the values set inside create-ellipse to draw text related to the closest circle:
   (if (< @closest-distance (. Integer MAX_VALUE))
     (do (fill 0)
         (text @closest-text
