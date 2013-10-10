@@ -11,7 +11,7 @@
   (background 255)
   (smooth)
   (no-stroke)
-  (set-state! :img (load-image "map.png"))
+  (set-state! :img (load-image "resources/ch3/map.png"))
   (fill 192 0 0))
 
 (defn create-ellipse [location]

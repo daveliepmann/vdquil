@@ -19,7 +19,7 @@
   (text-align :center)
   (smooth)
   (no-stroke)
-  (set-state! :img (load-image "map.png")))
+  (set-state! :img (load-image "resources/ch3/map.png")))
 
 (defn create-ellipse [location]
   (let [[abbrev [x y]] location
