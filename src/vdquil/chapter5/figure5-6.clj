@@ -9,10 +9,9 @@
 ;; data structure with all the information I needed, in the format I
 ;; preferred.
 
-(ns vdquil.chapter5.figure5-4
+(ns vdquil.chapter5.figure5-6
   (:use quil.core)
-  (:use vdquil.chapter5.ch5data)
-  (:require clojure.pprint))
+  (:use vdquil.chapter5.ch5data))
 
 (defn setup []
   (text-font (create-font "Sans-Serif" 11)))

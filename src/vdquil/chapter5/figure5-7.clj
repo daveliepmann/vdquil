@@ -4,10 +4,9 @@
 
 ;; TODO use salary as a tiebreaker for rankings (p127)
 
-(ns vdquil.chapter5.figure5-4
+(ns vdquil.chapter5.figure5-7
   (:use quil.core)
-  (:use vdquil.chapter5.ch5data)
-  (:require clojure.pprint))
+  (:use vdquil.chapter5.ch5data))
 
 (defn setup []
   (text-font (create-font "Georgia" 12)))
