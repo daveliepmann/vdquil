@@ -2,7 +2,7 @@
 ;; Sample ranking that highlights lines
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
-;; TODO use salary as a tiebreaker for rankings (p127)
+;; TODO use salary as a tiebreaker for rankings (page 127)
 
 (ns vdquil.chapter5.figure5-7
   (:use quil.core)
