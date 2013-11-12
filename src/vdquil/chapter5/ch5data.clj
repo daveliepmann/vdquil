@@ -79,7 +79,8 @@
 
 ;; I wanted to grab the salary data directly from USA Today (as
 ;; described on p109) so I could preprocess it manually in emacs, but
-;; I got a DNS error.
+;; I got a DNS error across multiple attempts on distinct days.
+;; http://usatoday30.usatoday.com/sports/baseball/salaries/totalpayroll.aspx?year=2007
 (def team-salaries
   {"nyy" 189639045
    "bos" 143026214
