@@ -24,9 +24,6 @@
 (def max-longitude 0.35192886)
 (def max-latitude 0.87044954)
 
-(map-range 0.26091918 min-latitude max-latitude (- canvas-height 20) 20)
-(map-range 0.6702453 min-longitude max-longitude 30  (- canvas-width 30) )
-
 (defn draw []
   (background 255)
   (with-open [zips (io/reader "data/zips-modified.tsv")]
