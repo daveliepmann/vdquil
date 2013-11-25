@@ -44,10 +44,8 @@
 
 (defn draw []
   (image (state :img) 0 0)
-  (loop [rows location-data]
-    (if (seq rows)
-      (do (create-ellipse (first rows))
-          (recur (rest rows)))))
+  (doseq [row location-data] 
+    (create-ellipse row))
   ;; Use the values set inside create-ellipse to draw text related to the closest circle:
   (if (< @closest-distance (. Integer MAX_VALUE))
     (do (fill 0)

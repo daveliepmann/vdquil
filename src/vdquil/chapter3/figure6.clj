@@ -29,10 +29,8 @@
 
 (defn draw []
   (image (state :img) 0 0)
-  (loop [rows location-data]
-    (if (seq rows)
-      (do (create-ellipse (first rows))
-          (recur (rest rows))))))
+  (doseq [row location-data] 
+    (create-ellipse row)))
 
 (defsketch ch3_map
   :title "Map"
