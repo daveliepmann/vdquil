@@ -67,12 +67,10 @@
               (raw-key))]
     (if (or (= (key-code) (keys :backspace)) (= (key-code) (keys :delete)))
       (if (> (count @typed-chars) 0)
-        (do ;;(swap! typed-count dec)
-            (swap! typed-chars #(subs % 0 (- (count @typed-chars) 1)))))
+        (swap! typed-chars #(subs % 0 (- (count @typed-chars) 1))))
       (if (and (>= (int key) (int (keys :0))) (<= (int key) (int (keys :9)))
                (< (count @typed-chars) 5))
-        (do ;;(swap! typed-count inc)
-            (swap! typed-chars #(str % key)))))))
+        (swap! typed-chars #(str % key))))))
 
 (defsketch zips
   :title "Figure 6-2: selecting a region of zip codes"
