@@ -43,14 +43,7 @@
          (reduce (fn [acc [_ attr code]]
                    (if (desired-attributes? attr) (conj acc attr code) acc)) [])
          (partition 8)
-         (map #(list (first %)
-                     (Integer/parseInt (second %))
-                     (nth % 2)
-                     (nth % 3)
-                     (nth % 4)
-                     (nth % 5)
-                     (nth % 6)
-                     (Integer/parseInt (last %))))
+         (map #(map (fn [i] (let [r-s (read-string i)] (if (number? r-s) r-s i))) %))
          (map #(apply hash-map %)))))
 
 ;; e.g.:

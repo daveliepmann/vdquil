@@ -16,3 +16,6 @@ To run these sketches yourself, first walk through the preprocessing, then data,
  1. Evaluate the expressions in _ch5preprocessing.clj_ first. (The team images and figure 8 data are already included in the repository, so you can skip this step if you just want to see the output.) Change sample data (e.g. dates) as desired. Note that the second section (grabbing data across a date range) is not needed until figure 8.
  1. Evaluate the expressions in _ch5data.clj_.
  1. Evaluate the figures, e.g. _figure5-6.clj_. If you want to compare different versions of the sketch, comment out the marked code blocks.
+
+####Attribution
+_This project is based on code and examples in Visualizing Data, First Edition by Ben Fry. Copyright 2008 Ben Fry, 9780596514556_
