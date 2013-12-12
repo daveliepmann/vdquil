@@ -92,11 +92,8 @@
   (annotate-y-axis)
   (draw-axis-labels)
   (begin-shape)
-  ;; TODO convert to doseq
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-bar (first rows))
-          (recur (rest rows)))))
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-bar row))
   (vertex plotx2 ploty2)
   (vertex plotx1 ploty2)
   (end-shape)
