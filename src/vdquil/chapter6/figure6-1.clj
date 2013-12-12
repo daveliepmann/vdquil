@@ -6,13 +6,12 @@
   (:use quil.core)
   (:use vdquil.util)
   (:require [clojure.java.io :as io])
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as string]))
 
 (def canvas-height 453)
 (def canvas-width 720)
 
-(defn setup []
-  (background 255))
+(defn setup [])
 
 ;; The first line is record count / minX / maxX / minY / maxY
 ;; I just manually pulled it in--let's not overcomplicate things.
@@ -28,9 +27,12 @@
   (background 255)
   (with-open [zips (io/reader "data/zips-modified.tsv")]
     (doseq [line (line-seq zips)]
-      (let [l (str/split line #"\t")]
-        (set-pixel (map-range (read-string (second l)) min-longitude max-longitude 30 (- canvas-width 30))
-                   (map-range (read-string (nth l 2)) min-latitude max-latitude (- canvas-height 20) 20)
+      (let [l (string/split line #"\t")]
+        (set-pixel (map-range (read-string (second l))
+                              min-longitude max-longitude
+                              30 (- canvas-width 30))
+                   (map-range (read-string (nth l 2)) min-latitude max-latitude
+                              (- canvas-height 20) 20)
                    (hex-to-color "#000000"))))))
 
 (defsketch zips

@@ -6,7 +6,7 @@
   (:use quil.core)
   (:use vdquil.util)
   (:require [clojure.java.io :as io])
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as string]))
 
 (def canvas-height 453)
 (def canvas-width 720)
@@ -27,19 +27,23 @@
 
 (def typed-chars (atom ""))
 
+;; TODO pull in performance improvements from zoomable version
 (defn draw []
   (smooth)
   (background (hex-to-color "#333333"))
   (with-open [zips (io/reader "data/zips-modified.tsv")]
     (doseq [line (line-seq zips)]
-      (let [l (str/split line #"\t")
+      (let [l (string/split line #"\t")
             clr (if (= 0 (count @typed-chars))
                   "#999966" ;; dormant color, since we have selected no zips
                   (if (= (subs (first l) 0 (count @typed-chars)) @typed-chars)
                     "#CBCBCB" ;; highlight color, since this matches what the user entered
                     "#66664C"))] ;; unhighlight color, since this point is not selected 
-        (set-pixel (map-range (read-string (second l)) min-longitude max-longitude 30 (- canvas-width 30))
-                   (map-range (read-string (nth l 2)) min-latitude max-latitude (- canvas-height 20) 20)
+        (set-pixel (map-range (read-string (second l))
+                              min-longitude max-longitude
+                              30 (- canvas-width 30))
+                   (map-range (read-string (nth l 2))
+                              min-latitude max-latitude (- canvas-height 20) 20)
                    (hex-to-color clr)))))
   ;; solicit user input
   (fill (hex-to-color "#CBCBCB"))
@@ -47,6 +51,7 @@
     (text "type the digits of a zip code" 40 (- (height) 40))
     (text @typed-chars 40 (- (height) 40))))
 
+;; TODO pull in improved key and key-handler functions from zoomable version
 (def keys
   {:backspace 8
    :delete 46
