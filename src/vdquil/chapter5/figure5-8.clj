@@ -4,6 +4,7 @@
 
 ;; TODO use salary as a tiebreaker for rankings (p127)
 ;; TODO need a clojure/quil version of Interpolator to smoothly animate transitions
+;; ----> two lerps per line for all lines, x and y, loop through for some # of frames
 
 (ns vdquil.chapter5.figure5-8
   (:use quil.core)
@@ -24,7 +25,8 @@
           (map #(* % row-height) (range))))
 
 (defn team [team-abbrev]
-  (let [team-standings-for-date (first (filter #(= (% "code") team-abbrev) (standings-over-time @selected-date)))]
+  (let [team-standings-for-date (first (filter #(= (% "code") team-abbrev)
+                                               (standings-over-time @selected-date)))]
     {:abbrev team-abbrev
      :name (mlb-teams team-abbrev)
      :logo (str "resources/ch5/small/" team-abbrev "_small.gif")
@@ -67,10 +69,10 @@
 
 (defn draw-date-selector []
   (stroke-weight 1)
-  (doseq [date date-range]
+  (doseq [date dates-by-x]
     (let [date-x (/ (- (width) (* 2 (count standings-over-time))) 2)
-          x (+ date-x (date :x))]
-      (if (= @selected-date (date :date))
+          x (+ date-x (first date))]
+      (if (= @selected-date (second date))
         (do (stroke 0)
             (line x 10 x 23)
             (text-align :center :top)
@@ -96,7 +98,6 @@
               (dates-by-x mouse-date)))))
 
 (defn key-handler []
-  (println (str (raw-key)))
   (let [old-date-x ((into {} (map (fn [[a b]] [b a]) dates-by-x)) @selected-date)
         key (if (= processing.core.PConstants/CODED (int (raw-key)))
               (key-code)

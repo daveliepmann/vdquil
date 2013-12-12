@@ -33,10 +33,8 @@
   (draw-plot-area)
   (stroke-weight 5)
   (stroke (apply color (hex-to-rgb "#5679C1")))
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-point (first rows))
-          (recur (rest rows))))))
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-point row)))
 
 (defsketch mtc
   :title "Milk, Tea, Coffee"

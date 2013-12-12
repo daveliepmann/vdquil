@@ -93,10 +93,8 @@
   (annotate-y-axis)
   (draw-axis-labels)
   (begin-shape)
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-point-area (first rows))
-          (recur (rest rows)))))
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-point-area row))
   (vertex plotx2 ploty2)
   (vertex plotx1 ploty2)
   (end-shape))

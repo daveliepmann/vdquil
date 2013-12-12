@@ -99,13 +99,11 @@
   (annotate-y-axis)
   (draw-axis-labels)
   (begin-shape)
-  ;; double the curve points for the start and stop
+  ;; double the curve points for the start
   (draw-data-point (first (rest milk-tea-coffee-data)))
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-point (first rows))
-          (recur (rest rows)))))
-  ;; double the curve points for the start and stop
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-point row))
+  ;; double the curve points for the stop, too
   (draw-data-point (last (rest milk-tea-coffee-data)))
   (end-shape))
 

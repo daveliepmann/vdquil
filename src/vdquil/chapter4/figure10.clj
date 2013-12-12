@@ -109,10 +109,8 @@
   (annotate-y-axis)
   (draw-axis-labels)
   (begin-shape)
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-point (first rows))
-          (recur (rest rows)))))
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-point row))
   (end-shape))
 
 (defn switch-data-set []

@@ -92,6 +92,7 @@
   (annotate-y-axis)
   (draw-axis-labels)
   (begin-shape)
+  ;; TODO convert to doseq
   (loop [rows (rest milk-tea-coffee-data)]
     (if (seq rows)
       (do (draw-data-bar (first rows))

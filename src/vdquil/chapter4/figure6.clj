@@ -96,10 +96,8 @@
   (annotate-x-axis)
   (annotate-y-axis)
   (draw-axis-labels)
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-point (first rows))
-          (recur (rest rows))))))
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-point row)))
 
 (defn switch-data-set []
   (let [max-modulo (count (first milk-tea-coffee-data))]
