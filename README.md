@@ -10,12 +10,14 @@ Similar work has been done with Matt Pearson's [Generative Art](https://github.c
 
 My goals are to exactly match the Processing code's output and to write idiomatic Clojure. If you find an error (or even something non-idiomatic to Clojure) please contact me on github or via email (first name, period, last name, gmail).
 
-###Running the Exercises yourself
+###Running the exercises yourself
 To run these sketches yourself, first walk through the preprocessing, then data, then figures. For example, for Chapter 5:
 
  1. Evaluate the expressions in _ch5preprocessing.clj_ first. (The team images and figure 8 data are already included in the repository, so you can skip this step if you just want to see the output.) Change sample data (e.g. dates) as desired. Note that the second section (grabbing data across a date range) is not needed until figure 8.
  1. Evaluate the expressions in _ch5data.clj_.
  1. Evaluate the figures, e.g. _figure5-6.clj_. If you want to compare different versions of the sketch, comment out the marked code blocks.
+
+Compare my code output to that of the original by downloading [the Processing source](http://benfry.com/writing/archives/3) and running them on your machine.
 
 ####Attribution
 _This project is based on code and examples in Visualizing Data, First Edition by Ben Fry. Copyright 2008 Ben Fry, 9780596514556_
