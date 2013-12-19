@@ -17,7 +17,7 @@ To run these sketches yourself, first walk through the preprocessing, then data,
  1. Evaluate the expressions in _ch5data.clj_.
  1. Evaluate the figures, e.g. _figure5-6.clj_. If you want to compare different versions of the sketch, comment out the marked code blocks.
 
-Compare my code output to that of the original by downloading [the Processing source](http://benfry.com/writing/archives/3) and running them on your machine.
+Compare my code output to that of the original by downloading [the Processing source](http://benfry.com/writing/archives/3) and running the examples on your machine.
 
 ####Attribution
 _This project is based on code and examples in Visualizing Data, First Edition by Ben Fry. Copyright 2008 Ben Fry, 9780596514556_
