@@ -23,16 +23,19 @@ Compare my code output to that of the original by downloading [the Processing so
 _This project is based on code and examples in Visualizing Data, First Edition by Ben Fry. Copyright 2008 Ben Fry, 9780596514556_
 
 #### Appendix Alpha: Screenshots!
-*Chapter 3:*
+**Chapter 3** - Plotting (arbitrary) data spatially:
+
 ![Screenshot of Chapter 3, figure 7](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter3/ch3fig7.png?raw=true "Chapter 3 figure 7 screenshot")
 
-*Chapter 4:*
+**Chapter 4** - Graphing milk, tea, and coffee prices as a time series:
+
 ![Screenshot of Chapter 4, figure 14](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter4/ch4fig14.png?raw=true "Chapter 4 figure 14 screenshot")
 
-*Chapter 5:*
+**Chapter 5** - Correlating separate win/loss and salary datasets for Major League Baseball teams:
+
 ![Screenshot of Chapter 5, figure 8](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter5/ch5fig8.png?raw=true "Chapter 5 figure 8 screenshot")
 
-*Chapter 6:*
+**Chapter 6:** Mapping zipcodes as a scatterplot:
 ![Screenshot of Chapter 6, whole map](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter6/ch6-USA.png?raw=true "Chapter 6 whole map screenshot")
 
 ![Screenshot of Chapter 6, zoomed in](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter6/ch6-michigan.png?raw=true "Chapter 6 zoomed in screenshot")
