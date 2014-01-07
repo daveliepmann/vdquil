@@ -1,10 +1,9 @@
-;; Ben Fry's Visualizing Data, Chapter 6, figure 6, with zoom
+;; Ben Fry's Visualizing Data, Chapter 6, figure 4, with zoom
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
-(ns vdquil.chapter6.figure6-4
+(ns vdquil.chapter6.figure6-zoom
   (:use quil.core)
   (:use vdquil.util)
-  (:require [clojure.java.io :as io])
   (:require [clojure.string :as string]))
 
 (def canvas-height 453)
@@ -18,7 +17,6 @@
 (def typed-chars (atom ""))
 
 (def zoom-enabled (atom false))
-(def zoom-level (atom 0))
 
 (def palette (atom {}))
 
