@@ -1,9 +1,10 @@
 ;; Ben Fry's Visualizing Data, Chapter 7, improved treemap example
+;; Improve upon the book's "simple treemap example" by adding a stop list
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
 ;; project.clj's :java-source-paths gives us access to treemap
 ;; Treemap package grabbed from http://benfry.com/writing/treemap/library.zip
-(ns vdquil.chapter7.simple-treemap-example
+(ns vdquil.chapter7.improved-treemap-example
   (:use quil.core)
   (:import treemap.SimpleMapItem treemap.Treemap treemap.SimpleMapModel)
   (:require [clojure.string :as string]))

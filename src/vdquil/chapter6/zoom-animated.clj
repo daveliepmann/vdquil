@@ -92,7 +92,6 @@
   (reduce (fn [[min-lat max-lat min-long max-long] {:keys [longitude latitude]}]
             (vector (min min-lat  latitude)  (max max-lat  latitude)
                     (min min-long longitude) (max max-long longitude)))
-          ;;          [Float/MAX_VALUE Float/MIN_VALUE Float/MAX_VALUE Float/MIN_VALUE]
           [Float/MAX_VALUE (- Float/MAX_VALUE) Float/MAX_VALUE (- Float/MAX_VALUE)]
           zips))
 
@@ -247,7 +246,7 @@
     (load-bounds-queue)))
 
 (defsketch zips
-  :title "Zip codes with zooming, using tries"
+  :title "Zip codes with animated zooming"
   :setup setup
   :draw draw
   :size [canvas-width canvas-height]

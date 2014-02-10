@@ -6,4 +6,5 @@
   :java-source-paths ["treemap"] ;; for Chapter 7's java interop work
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [quil "1.6.0"]
-                 [clj-time "0.6.0"]]) 
+                 [clj-time "0.6.0"]]
+  :jvm-opts ["-Xmx4g"]) 

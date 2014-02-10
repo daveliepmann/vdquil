@@ -1,4 +1,5 @@
 ;; Ben Fry's Visualizing Data, Chapter 7, simple treemap example (p190)
+;; Visualize word usage in Twain's 'Following the Equator' as a treemap
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
 ;; project.clj's :java-source-paths gives us access to treemap
