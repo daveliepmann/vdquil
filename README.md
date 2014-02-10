@@ -62,4 +62,4 @@ interactivity. But here are some screenshots to hold you over.
 a treemap")
 
 ### Attribution
-_This project is based on code and examples in Visualizing Data, First Edition by Ben Fry. Copyright 2008 Ben Fry, 9780596514556_
+This project is based on code and examples in *Visualizing Data, First Edition* by Ben Fry, copyright 2008 Ben Fry, 9780596514556*.
