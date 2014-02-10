@@ -57,7 +57,7 @@ interactivity. But here are some screenshots to hold you over.
 ![Screenshot of Chapter 6, zoomed in](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter6/ch6-michigan.png?raw=true "Chapter 6 zoomed in screenshot")
 
 **Chapter 7:** Treemapping word usage in Mark Twain's *Following the Equator*:
-![Screenshot of Chapter 7, figure 2](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter7/twain-word-treemap.png?raw=true
+![Screenshot of Chapter 7, figure 2](https://github.com/daveliepmann/vdquil/blob/master/src/vdquil/chapter7/word-treemap.png?raw=true
 "Chapter 7, word usage in Twain's Following the Equator, displayed as
 a treemap")
 
