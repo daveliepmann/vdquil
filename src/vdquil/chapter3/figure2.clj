@@ -3,9 +3,8 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.chapter3.figure2
-  (:use quil.core)
-  (:use vdquil.chapter3.ch3data)
-  (:use vdquil.util))
+  (:use [quil.core]
+        [vdquil.chapter3.ch3data]))
 
 (defn setup []
   (background 255)

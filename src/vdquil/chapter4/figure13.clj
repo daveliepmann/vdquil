@@ -3,10 +3,9 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.chapter4.figure13
-  (:use quil.core)
-  (:use vdquil.util)
-  (:use vdquil.chapter4.ch4data)
-  (require [clojure.set :refer [union]]))
+  (:use [quil.core]
+        [vdquil.util]
+        [vdquil.chapter4.ch4data]))
 
 (def current-column (atom 1))
 
@@ -20,11 +19,13 @@
 
 (def year-min (apply min (map first (rest milk-tea-coffee-data)))) 
 (def year-max (apply max (map first (rest milk-tea-coffee-data))))
-(def data-min (apply min (apply union (for [x (range 1 4)] (map #(nth % x) (rest milk-tea-coffee-data))))))
+(def data-min (apply min (mapcat rest (rest milk-tea-coffee-data))))
 (def year-interval 10)
 (def volume-interval 10)
-(def data-max (* volume-interval (ceil (/ (apply max (apply union (for [x (range 1 4)] (map #(nth % x) (rest milk-tea-coffee-data))))) volume-interval))))
 (def data-first 0)
+(def data-max (* volume-interval
+                 (ceil (/ (apply max (mapcat rest (rest milk-tea-coffee-data)))
+                          volume-interval))))
 
 (defn setup [])
 
@@ -63,20 +64,19 @@
   (doseq [volume (range data-first (+ 1 data-max) volume-interval)]
     (let [y (map-range volume data-first data-max ploty2 ploty1)]
       ;; Draw major tick mark
-      (do
-        (stroke 0)
-        (line plotx1 y (- plotx1 4) y)
-        (text-align :right :center) ;; Center vertically
-        (if (= volume data-first) (text-align :right :bottom)) ;; Align the "0" label by the bottom
-        (text (str (ceil volume)) (- plotx1 10) y)))))
+      (stroke 0)
+      (line plotx1 y (- plotx1 4) y)
+      (text-align :right :center) ;; Center vertically
+      (if (= volume data-first) (text-align :right :bottom)) ;; Align the "0" label by the bottom
+      (text (str (ceil volume)) (- plotx1 10) y))))
 
 (defn draw-axis-labels []
-  ;; Draw axis labels
   (text-size 13)
   (text-leading 15)
   (text-align :center :center)
   (text "Gallons\nconsumer\nper capita" 50 (/ (+ ploty1 ploty2) 2))
-  (text (str (first (first milk-tea-coffee-data))) (/ (+ plotx1 plotx2) 2) (- (height) 25)))
+  (text (str (first (first milk-tea-coffee-data)))
+        (/ (+ plotx1 plotx2) 2) (- (height) 25)))
 
 (defn draw-data-point-area [row]
   (stroke-weight 2)
@@ -93,10 +93,8 @@
   (annotate-y-axis)
   (draw-axis-labels)
   (begin-shape)
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-point-area (first rows))
-          (recur (rest rows)))))
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-point-area row))
   (vertex plotx2 ploty2)
   (vertex plotx1 ploty2)
   (end-shape)

@@ -3,22 +3,25 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.chapter4.figure1
-  (:use quil.core)
-  (:use vdquil.util)
-  (:use vdquil.chapter4.ch4data)
-  (require [clojure.set :refer [union]]))
+  (:use [quil.core]
+        [vdquil.util]
+        [vdquil.chapter4.ch4data]))
 
 (def year-min (apply min (map first (rest milk-tea-coffee-data)))) 
+
 (def year-max (apply max (map first (rest milk-tea-coffee-data))))
-(def data-min (apply min (apply union (for [x (range 1 4)] (map #(nth % x) (rest milk-tea-coffee-data))))))
-(def data-max (apply max (apply union (for [x (range 1 4)] (map #(nth % x) (rest milk-tea-coffee-data))))))
+
+(def data-min  (apply min (mapcat rest (rest milk-tea-coffee-data))))
+
+(def data-max (apply max (mapcat rest (rest milk-tea-coffee-data))))
 
 (defn setup []
-  (background 224)
   (smooth))
 
-(defn draw-plot-area []
-  ;; Show the plot area as a white box
+(defn draw-plot-area
+  "Render the plot area as a white box"
+  []
+  (background 224)
   (fill 255)
   (no-stroke)
   (rect-mode :corners)
@@ -32,7 +35,7 @@
 (defn draw []
   (draw-plot-area)
   (stroke-weight 5)
-  (stroke (apply color (hex-to-rgb "#5679C1")))
+  (stroke (hex-to-color "#5679C1"))
   (doseq [row (rest milk-tea-coffee-data)]
     (draw-data-point row)))
 

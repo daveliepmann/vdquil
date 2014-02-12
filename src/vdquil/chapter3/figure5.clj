@@ -3,9 +3,9 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.chapter3.figure5
-  (:use quil.core)
-  (:use vdquil.util)
-  (:use vdquil.chapter3.ch3data))
+  (:use [quil.core]
+        [vdquil.chapter3.ch3data]
+        [vdquil.util]))
 
 (defn setup []
   (background 255)
@@ -24,10 +24,10 @@
                       (apply min (map second random-data))
                       (apply max (map second random-data)))
         ;; ruddy green -- to produce figure 3, use #FF4422
-        low-color (hex-to-rgb "#296F34") 
+        low-color (hex-to-color "#296F34") 
         ;; light blue -- to produce figure 3, use #4422CC
-        high-color (hex-to-rgb "#61E2F0")]
-    (fill (lerp-color (apply color low-color) (apply color high-color) percent))
+        high-color (hex-to-color "#61E2F0")]
+    (fill (lerp-color low-color high-color percent))
     (ellipse x y radius radius)))
 
 (defn draw []

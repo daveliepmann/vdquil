@@ -2,8 +2,8 @@
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
 (ns vdquil.chapter6.figure6-zoom
-  (:use quil.core)
-  (:use vdquil.util)
+  (:use [quil.core]
+        [vdquil.util])
   (:require [clojure.string :as string]))
 
 (def canvas-height 453)

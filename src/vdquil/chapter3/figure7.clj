@@ -3,11 +3,12 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.chapter3.figure7
-  (:use quil.core)
-  (:use vdquil.util)
-  (:use vdquil.chapter3.ch3data))
+  (:use [quil.core]
+        [vdquil.chapter3.ch3data]
+        [vdquil.util]))
 
 (def data-min (apply min (map second random-data)))
+
 (def data-max (apply max (map second random-data)))
 
 (defn setup []
@@ -21,11 +22,11 @@
   (let [[abbrev [x y]] location
         random-value (random-data abbrev)
         radius 15
-        low-color (hex-to-rgb "#333366")
-        high-color (hex-to-rgb "#EC5166")]
+        low-color (hex-to-color "#333366")
+        high-color (hex-to-color "#EC5166")]
     (if (>= random-value 0)
-      (apply fill (conj (vec low-color) (map-range random-value 0 (abs data-min) 0 255)))
-      (apply fill (conj (vec high-color) (map-range (abs random-value) 0 data-max 0 255))))
+      (fill low-color (map-range random-value 0 (abs data-min) 0 255))
+      (fill high-color (map-range (abs random-value) 0 data-max 0 255)))
     (ellipse x y radius radius)))
 
 (defn draw []

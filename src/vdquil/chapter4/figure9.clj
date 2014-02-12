@@ -3,10 +3,9 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.chapter4.figure9
-  (:use quil.core)
-  (:use vdquil.util)
-  (:use vdquil.chapter4.ch4data)
-  (require [clojure.set :refer [union]]))
+  (:use [quil.core]
+        [vdquil.util]
+        [vdquil.chapter4.ch4data]))
 
 (def current-column (atom 1))
 
@@ -20,18 +19,24 @@
 
 (def year-min (apply min (map first (rest milk-tea-coffee-data)))) 
 (def year-max (apply max (map first (rest milk-tea-coffee-data))))
-#'vdquil.chapter4.figure9/year-max(def data-min (apply min (apply union (for [x (range 1 4)] (map #(nth % x) (rest milk-tea-coffee-data))))))
+(def data-min (apply min (mapcat rest (rest milk-tea-coffee-data))))
+
 (def year-interval 10)
 (def volume-interval 5)
-(def data-max (* volume-interval (ceil (/ (apply max (apply union (for [x (range 1 4)] (map #(nth % x) (rest milk-tea-coffee-data))))) volume-interval))))
+
+(def data-max (* volume-interval
+                 (ceil (/ (apply max (mapcat rest (rest milk-tea-coffee-data)))
+                          volume-interval))))
+
 (def data-first 0)
 
-(defn setup [])
+(defn setup []
+  (smooth))
 
-(defn draw-plot-area []
+(defn draw-plot-area
+  "Show the plot area as a white box"
+  []
   (background 224)
-  (smooth)
-  ;; Show the plot area as a white box
   (fill 255)
   (no-stroke)
   (rect-mode :corners)
@@ -67,16 +72,14 @@
       ;; Commented out--the minor tick marks are too visually distracting
       ;; (stroke 128)
       ;; (line plotx1 y (- plotx1 2) y) ;; Draw minor tick
-      (if (= 0 (mod volume 10)) ;; Draw major tick mark
-        (do
-          (stroke 0)
-          (line plotx1 y (- plotx1 4) y)
-          (text-align :right :center) ;; Center vertically
-          (if (= volume data-first) (text-align :right :bottom)) ;; Align the "0" label by the bottom
-          (text (str (ceil volume)) (- plotx1 10) y))))))
+      (when (= 0 (mod volume 10)) ;; Draw major tick mark
+        (stroke 0)
+        (line plotx1 y (- plotx1 4) y)
+        (text-align :right :center) ;; Center vertically
+        (if (= volume data-first) (text-align :right :bottom)) ;; Align the "0" label by the bottom
+        (text (str (ceil volume)) (- plotx1 10) y)))))
 
 (defn draw-axis-labels []
-  ;; Draw axis labels
   (text-size 13)
   (text-leading 15)
   (text-align :center :center)
@@ -95,7 +98,7 @@
   (stroke (apply color (hex-to-rgb "#5679C1")))
   (let [[year milk tea coffee] row]
     (vertex (map-range year year-min year-max plotx1 plotx2)
-           (map-range (nth row @current-column) data-min data-max ploty2 ploty1))))
+            (map-range (nth row @current-column) data-min data-max ploty2 ploty1))))
 
 (defn draw []
   (draw-plot-area)
@@ -105,11 +108,9 @@
   (draw-axis-labels)
   (no-fill)
   (begin-shape)
-  (loop [rows (rest milk-tea-coffee-data)]
-    (if (seq rows)
-      (do (draw-data-point (first rows))
-          (draw-data-line-segment (first rows))
-          (recur (rest rows)))))
+  (doseq [row (rest milk-tea-coffee-data)]
+    (draw-data-point row)
+    (draw-data-line-segment row))
   (end-shape))
 
 (defn switch-data-set []

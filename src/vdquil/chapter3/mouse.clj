@@ -2,9 +2,9 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.ch3.mouse
-  (:use quil.core)
-  (:use vdquil.util)
-  (:use vdquil.chapter3.ch3data))
+  (:use [quil.core]
+        [vdquil.chapter3.ch3data]
+        [vdquil.util]))
 
 (def data-min (apply min (map second random-data)))
 (def data-max (apply max (map second random-data)))
@@ -28,10 +28,10 @@
                  (map-range random-value 0 (apply max (map second random-data)) 1.5 15)
                  (map-range random-value 0 (apply min (map second random-data)) 1.5 15))
         ellipse-color (if (>= random-value 0)
-                        (hex-to-rgb "#4422cc") ;; blue
-                        (hex-to-rgb "#ff4422")) ;; red -- use emacs with rainbow-mode and you won't need these 2 comments!
+                        (hex-to-color "#4422cc") ;; blue
+                        (hex-to-color "#ff4422")) ;; red -- use emacs with rainbow-mode and you won't need these 2 comments!
         d (dist x y (mouse-x) (mouse-y))]
-    (apply fill ellipse-color)
+    (fill ellipse-color)
     (ellipse x y radius radius)    
     ;; Because the following check is done each time a new circle is drawn,
     ;; we end up with the values of the circle closest to the mouse.

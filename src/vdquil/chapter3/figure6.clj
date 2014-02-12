@@ -3,9 +3,9 @@
 ;; Converted from Processing to Quil as an exercise by Dave Liepmann
 
 (ns vdquil.chapter3.figure6
-  (:use quil.core)
-  (:use vdquil.util)
-  (:use vdquil.chapter3.ch3data))
+  (:use [quil.core]
+        [vdquil.chapter3.ch3data]
+        [vdquil.util]))
 
 (defn setup []
   (background 255)
@@ -20,11 +20,11 @@
         radius (if (>= random-value 0)
                  (map-range random-value 0 (apply max (map second random-data)) 3 30)
                  (map-range random-value 0 (apply min (map second random-data)) 3 30))
-        low-color (hex-to-rgb "#333366")
-        high-color (hex-to-rgb "#EC5166")]
+        low-color (hex-to-color "#333366")
+        high-color (hex-to-color "#EC5166")]
     (if (>= random-value 0)
-      (fill (apply color low-color))
-      (fill (apply color high-color)))
+      (fill low-color)
+      (fill high-color))
     (ellipse x y radius radius)))
 
 (defn draw []

@@ -3,10 +3,10 @@
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
 (ns vdquil.chapter6.figure6-2
-  (:use quil.core)
-  (:use vdquil.util)
-  (:require [clojure.java.io :as io])
-  (:require [clojure.string :as string]))
+  (:use [quil.core]
+        [vdquil.util])
+  (:require [clojure.java.io :as io]
+            [clojure.string :as string]))
 
 (def canvas-height 453)
 (def canvas-width 720)
@@ -51,31 +51,18 @@
     (text "type the digits of a zip code" 40 (- (height) 40))
     (text @typed-chars 40 (- (height) 40))))
 
-;; TODO pull in improved key and key-handler functions from zoomable version
-(def keys
-  {:backspace 8
-   :delete 46
-   :0 48
-   :1 49
-   :2 50
-   :3 51
-   :4 52
-   :5 53
-   :6 54
-   :7 55
-   :8 56
-   :9 57})
+(def deletion-key? #{\backspace}) ;; TODO test this key on a Windows machine
+(def number-key? (set (map char (range 48 58))))
 
-(defn key-handler []
+(defn key-handler
+  "Manage keyboard input of 0 to 5 digits"
+  []
   (let [key (if (= processing.core.PConstants/CODED (int (raw-key)))
-              (key-code)
-              (raw-key))]
-    (if (or (= (key-code) (keys :backspace)) (= (key-code) (keys :delete)))
-      (if (> (count @typed-chars) 0)
-        (swap! typed-chars #(subs % 0 (- (count @typed-chars) 1))))
-      (if (and (>= (int key) (int (keys :0))) (<= (int key) (int (keys :9)))
-               (< (count @typed-chars) 5))
-        (swap! typed-chars #(str % key))))))
+              (key-code) (raw-key))] 
+    (cond (and (deletion-key? key) (> (count @typed-chars) 0))
+          (swap! typed-chars #(apply str (butlast %)))
+          (and (number-key? key) (< (count @typed-chars) 5))
+          (swap! typed-chars #(str % key)))))
 
 (defsketch zips
   :title "Figure 6-2: selecting a region of zip codes"

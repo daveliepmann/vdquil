@@ -3,10 +3,10 @@
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
 (ns vdquil.chapter6.figure6-1
-  (:use quil.core)
-  (:use vdquil.util)
-  (:require [clojure.java.io :as io])
-  (:require [clojure.string :as string]))
+  (:use [quil.core]
+        [vdquil.util])
+  (:require [clojure.java.io :as io]
+            [clojure.string :as string]))
 
 (def canvas-height 453)
 (def canvas-width 720)
