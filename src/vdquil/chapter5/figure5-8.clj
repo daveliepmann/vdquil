@@ -7,8 +7,8 @@
 ;; ----> two lerps per line for all lines, x and y, loop through for some # of frames
 
 (ns vdquil.chapter5.figure5-8
-  (:use quil.core)
-  (:use vdquil.chapter5.ch5data))
+  (:use [quil.core]
+        [vdquil.chapter5.ch5data]))
 
 (defn setup []
   (text-font (create-font "Georgia" 12)))
@@ -93,9 +93,8 @@
 (defn mouse-handler []
   (let [x-for-date (- (mouse-x) (/ (- (width) (* 2 (count standings-over-time))) 2))
         mouse-date (if (odd? x-for-date) (inc x-for-date) x-for-date)]
-    (if (and (< (mouse-y) 30) (not (nil? (dates-by-x mouse-date))))
-      (reset! selected-date
-              (dates-by-x mouse-date)))))
+    (when (and (< (mouse-y) 30) (not (nil? (dates-by-x mouse-date))))
+      (reset! selected-date (dates-by-x mouse-date)))))
 
 (defn key-handler []
   (let [old-date-x ((into {} (map (fn [[a b]] [b a]) dates-by-x)) @selected-date)
@@ -103,10 +102,10 @@
               (key-code)
               (raw-key))]
     (if (= key 37) ;; left arrow
-      (if (not (nil? (dates-by-x (- old-date-x 2)))) 
+      (when (not (nil? (dates-by-x (- old-date-x 2)))) 
         (reset! selected-date (dates-by-x (- old-date-x 2))))
-      (if (= key 39) ;; right arrow
-        (if (not (nil? (dates-by-x (+ 2 old-date-x))))
+      (when (= key 39) ;; right arrow
+        (when (not (nil? (dates-by-x (+ 2 old-date-x))))
           (reset! selected-date (dates-by-x (+ 2 old-date-x))))))))
 
 (defsketch mlb

@@ -2,7 +2,7 @@
 ;; Converted from Processing to Clojure as an exercise by Dave Liepmann
 
 (ns vdquil.chapter5.preprocessing
-  (:use vdquil.chapter5.ch5data)
+  (:use [vdquil.chapter5.ch5data])
   (:require [clj-time.core :as time]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

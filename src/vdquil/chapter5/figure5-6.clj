@@ -10,8 +10,8 @@
 ;; preferred.
 
 (ns vdquil.chapter5.figure5-6
-  (:use quil.core)
-  (:use vdquil.chapter5.ch5data))
+  (:use [quil.core]
+        [vdquil.chapter5.ch5data]))
 
 (defn setup []
   (text-font (create-font "Sans-Serif" 11)))
@@ -27,7 +27,8 @@
    :name (mlb-teams team-abbrev)
    :logo (str "resources/ch5/small/" team-abbrev "_small.gif")
    :w-l (team-standings team-abbrev)
-   :w-l-ratio (/ (first (team-standings team-abbrev)) (second (team-standings team-abbrev)))
+   :w-l-ratio (/ (first (team-standings team-abbrev))
+                 (second (team-standings team-abbrev)))
    :salary (team-salaries team-abbrev)
    :salary-y (teams-with-salary-y team-abbrev)})
 
