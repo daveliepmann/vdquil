@@ -12,7 +12,10 @@ excellent [Quil](https://github.com/quil/quil) library.
 
 Similar work has been done with Matt Pearson's [Generative Art](https://github.com/quil/quil/blob/master/examples/gen_art/README.md).
 
-My goals are to exactly match the Processing code's output and to write idiomatic Clojure. If you find an error (or just something non-idiomatic to Clojure) please contact me via github or via email (first name, period, last name, gmail).
+My goals are to exactly match the Processing code's output and to
+write idiomatic Clojure. If you find an error (or just something
+non-idiomatic to Clojure) please contact me via github or via email
+(first name, period, last name, gmail). Pull requests welcome too.
 
 ### Running the exercises
 To see these sketches in action, first walk through the preprocessing, then data, then figures. For example, for Chapter 5:
