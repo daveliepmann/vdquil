@@ -5,8 +5,8 @@
 ;; TODO use salary as a tiebreaker for rankings (page 127)
 
 (ns vdquil.chapter5.figure5-7
-  (:use quil.core)
-  (:use vdquil.chapter5.ch5data))
+  (:use [quil.core]
+        [vdquil.chapter5.ch5data]))
 
 (defn setup []
   (text-font (create-font "Georgia" 12)))
@@ -22,7 +22,8 @@
    :name (mlb-teams team-abbrev)
    :logo (str "resources/ch5/small/" team-abbrev "_small.gif")
    :w-l (team-standings team-abbrev)
-   :w-l-ratio (/ (first (team-standings team-abbrev)) (second (team-standings team-abbrev)))
+   :w-l-ratio (/ (first (team-standings team-abbrev))
+                 (second (team-standings team-abbrev)))
    :salary (team-salaries team-abbrev)
    :salary-y (teams-with-salary-y team-abbrev)})
 
@@ -43,8 +44,7 @@
       (stroke-weight (map-range (:salary team)
                                 (apply min (map second team-salaries))
                                 (apply max (map second team-salaries))
-                                0.25 6))
-      
+                                0.25 6))      
       (line 160 h 335 (:salary-y team))
       (text (str "$" (format "%,d" (:salary team))) 345 (:salary-y team)))))
 

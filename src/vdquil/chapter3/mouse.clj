@@ -29,10 +29,11 @@
         ellipse-clr  (if (>= random-value 0) "#4422cc" "#ff4422")]
     {:abbrev abbr :x x :y y :val random-value :r radius :clr ellipse-clr}))
 
+(def ells (map ell location-data))
+
 (defn draw []
   (image (state :img) 0 0)
-  (let [ells     (map ell location-data)
-        ellipses (map #(assoc % :d (dist (:x %) (:y %) (mouse-x) (mouse-y)))
+  (let [ellipses (map #(assoc % :d (dist (:x %) (:y %) (mouse-x) (mouse-y)))
                       ells)
         closest  (apply (partial min-key :d) ellipses)]
     (doseq [e ellipses]

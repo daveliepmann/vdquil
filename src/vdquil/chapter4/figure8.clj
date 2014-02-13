@@ -20,16 +20,14 @@
 (def year-min (apply min (map first (rest milk-tea-coffee-data)))) 
 (def year-max (apply max (map first (rest milk-tea-coffee-data))))
 
-(def data-min (apply min (mapcat rest (rest milk-tea-coffee-data))))
-
 (def year-interval 10)
 (def volume-interval 5)
+(def data-first 0)
 
+(def data-min (apply min (mapcat rest (rest milk-tea-coffee-data))))
 (def data-max (* volume-interval
                  (ceil (/ (apply max (mapcat rest (rest milk-tea-coffee-data)))
                           volume-interval))))
-
-(def data-first 0)
 
 (defn setup []
   (smooth))
@@ -63,7 +61,7 @@
 
 (defn annotate-y-axis []
   ;; Draw volume labels
-  ;; (Since we're not drawing the minor ticks, we would ideally
+  ;; Since we're not drawing the minor ticks, we would ideally
   ;; increase volume-interval to 10 and remove the modulo-10 check.
   ;; We keep it in to show how to produce figure 5.
   (text-align :right :center)
