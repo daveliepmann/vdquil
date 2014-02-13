@@ -9,11 +9,6 @@
 (def data-min (apply min (map second random-data)))
 (def data-max (apply max (map second random-data)))
 
-(def closest-distance (atom (. Integer MAX_VALUE)))
-(def closest-text (atom ""))
-(def closest-x (atom 0))
-(def closest-y (atom 0))
-
 (defn setup []
   (background 255)
   (text-align :center)
@@ -21,38 +16,33 @@
   (no-stroke)
   (set-state! :img (load-image "resources/ch3/map.png")))
 
-(defn create-ellipse [location]
-  (let [[abbrev [x y]] location
-        random-value (random-data abbrev)
-        radius (if (>= random-value 0)
-                 (map-range random-value 0 (apply max (map second random-data)) 1.5 15)
-                 (map-range random-value 0 (apply min (map second random-data)) 1.5 15))
-        ellipse-color (if (>= random-value 0)
-                        (hex-to-color "#4422cc") ;; blue
-                        (hex-to-color "#ff4422")) ;; red -- use emacs with rainbow-mode and you won't need these 2 comments!
-        d (dist x y (mouse-x) (mouse-y))]
-    (fill ellipse-color)
-    (ellipse x y radius radius)    
-    ;; Because the following check is done each time a new circle is drawn,
-    ;; we end up with the values of the circle closest to the mouse.
-    (if (< d (+ 2 radius))
-      (if (< d @closest-distance)
-        (do (reset! closest-distance d)
-            (reset! closest-text (str (name-data abbrev) " " random-value))
-            (reset! closest-x x)
-            (reset! closest-y (- y (+ radius 4))))))))
+(defn ell [location]
+  (let [[abbr [x y]] location
+        random-value (random-data abbr)
+        radius       (if (>= random-value 0)
+                       (map-range random-value 0
+                                  (apply max (map second random-data)) 1.5 15)
+                       (map-range random-value 0
+                                  (apply min (map second random-data)) 1.5 15))
+        ;; blue for positive, red for negative.
+        ;; (use emacs with rainbow-mode and you won't need that comment!)
+        ellipse-clr  (if (>= random-value 0) "#4422cc" "#ff4422")]
+    {:abbrev abbr :x x :y y :val random-value :r radius :clr ellipse-clr}))
 
 (defn draw []
   (image (state :img) 0 0)
-  (doseq [row location-data] 
-    (create-ellipse row))
-  ;; Use the values set inside create-ellipse to draw text related to the closest circle:
-  (if (< @closest-distance (. Integer MAX_VALUE))
-    (do (fill 0)
-        (text @closest-text
-              @closest-x
-              @closest-y)))
-  (reset! closest-distance (. Integer MAX_VALUE)))
+  (let [ells     (map ell location-data)
+        ellipses (map #(assoc % :d (dist (:x %) (:y %) (mouse-x) (mouse-y)))
+                      ells)
+        closest  (apply (partial min-key :d) ellipses)]
+    (doseq [e ellipses]
+      (fill (hex-to-color (:clr e)))
+      (ellipse (:x e) (:y e) (:r e) (:r e)))
+    ;; When rolling over an ellipse with the mouse, label it:
+    (when (< (:d closest) (+ 2 (:r closest)))
+      (fill (hex-to-color "#2d2d2d"))
+      (text (str (name-data (:abbrev closest)) " " (:val closest))
+            (:x closest) (- (:y closest) (+ 4 (:r closest)))))))
 
 (defsketch ch3_map
   :title "Map"
