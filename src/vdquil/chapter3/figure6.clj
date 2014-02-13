@@ -33,7 +33,7 @@
     (create-ellipse row)))
 
 (defsketch ch3_map
-  :title "Map"
+  :title "Map with opposing colors for positive/negative values and size for magnitude"
   :setup setup
   :draw draw
   :size [640 400])

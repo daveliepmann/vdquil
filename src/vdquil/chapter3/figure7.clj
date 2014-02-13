@@ -35,7 +35,7 @@
     (create-ellipse row)))
 
 (defsketch ch3_map
-  :title "Map"
+  :title "Map using transparency for magnitude and color for pos/neg"
   :setup setup
   :draw draw
   :size [640 400])

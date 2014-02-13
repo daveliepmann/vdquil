@@ -36,7 +36,7 @@
     (create-ellipse row)))
 
 (defsketch ch3_map
-  :title "Map"
+  :title "Map displaying data using size and playing with color choices"
   :setup setup
   :draw draw
   :size [640 400])

@@ -28,7 +28,7 @@
     (create-ellipse row)))
 
 (defsketch ch3-fig2
-  :title "Map"
+  :title "Map, varying data by size"
   :setup setup
   :draw draw
   :size [640 400])
