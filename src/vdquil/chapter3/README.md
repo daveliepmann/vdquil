@@ -3,9 +3,9 @@
 We address basic methods of obtaining, massaging, and displaying
 spatial data. The exercises are, in order:
 
- 1. **Data**, which delineates the arbitrary data used by all subsequent exercises in this chapter
- 2. **Figure 2**, which displays the data using size
- 2. Figure 5 uses color instead of size, and plays with different
+ 1. **Data** delineates the dummy information used by all subsequent exercises in this chapter
+ 2. **Figure 2** displays the data using size
+ 2. **Figure 5** uses color instead of size, and plays with different
     color spaces. Figures 3 and 4 can be displayed by commenting out
     small sections as marked.
  3. **Figure 6** uses opposing colors to denote positive/negative
