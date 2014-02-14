@@ -31,9 +31,7 @@
 (defn setup []
   (smooth))
 
-(defn draw-plot-area
-  "Render the plot area as a white box"
-  []
+(defn draw-plot-area []
   (background 224)
   (fill 255)
   (no-stroke)
@@ -45,7 +43,8 @@
   (text-size 20)
   (text-align :left :baseline)
   (text-font (create-font "Sans-Serif" 20))
-  (text (nth (first milk-tea-coffee-data) @current-column) plotx1 (- ploty1 10)))
+  (text (nth (first milk-tea-coffee-data) @current-column)
+        plotx1 (- ploty1 10)))
 
 (defn annotate-x-axis []
   ;; Draw year labels
@@ -74,7 +73,8 @@
         (stroke 0)
         (line plotx1 y (- plotx1 4) y)
         (text-align :right :center) ;; Center vertically
-        (if (= volume data-first) (text-align :right :bottom)) ;; Align the "0" label by the bottom
+        ;; Align the "0" label by the bottom:
+        (if (= volume data-first) (text-align :right :bottom))
         (text (str (ceil volume)) (- plotx1 10) y)))))
 
 (defn draw-axis-labels []
@@ -82,7 +82,8 @@
   (text-leading 15)
   (text-align :center :center)
   (text "Gallons\nconsumer\nper capita" 50 (/ (+ ploty1 ploty2) 2))
-  (text (str (first (first milk-tea-coffee-data))) (/ (+ plotx1 plotx2) 2) (- (height) 25)))
+  (text (str (first (first milk-tea-coffee-data)))
+        (/ (+ plotx1 plotx2) 2) (- (height) 25)))
 
 (defn draw-data-point [row]
   (stroke (apply color (hex-to-rgb "#5679C1")))
@@ -98,8 +99,8 @@
       (text-align :center)
       (text (str (format "%.2f" (double (nth row @current-column)))
                  " (" (first row) ")")  x (- y 8)))
-    ;; we must restore the line's stroke-weight and lack of fill due to a bug which occurs
-    ;; when rolling over the last data point
+    ;; we must restore the line's stroke-weight and lack of fill due
+    ;; to a bug which occurs when rolling over the last data point
     (stroke-weight 2)
     (no-fill)))
 
@@ -120,10 +121,10 @@
       (do (swap! current-column dec)
           (reset! current-column (mod @current-column max-modulo))
           (compare-and-set! current-column 0 (- max-modulo 1)))
-      (if (= (str (raw-key)) "]")
-        (do (swap! current-column inc)
-            (reset! current-column (mod @current-column max-modulo))
-            (compare-and-set! current-column 0 1))))))
+      (when (= (str (raw-key)) "]")
+        (swap! current-column inc)
+        (reset! current-column (mod @current-column max-modulo))
+        (compare-and-set! current-column 0 1)))))
 
 (defsketch mtc
   :title "Milk, Tea, Coffee"

@@ -109,10 +109,10 @@
       (do (swap! current-column dec)
           (reset! current-column (mod @current-column max-modulo))
           (compare-and-set! current-column 0 (- max-modulo 1)))
-      (if (= (str (raw-key)) "]")
-        (do (swap! current-column inc)
-            (reset! current-column (mod @current-column max-modulo))
-            (compare-and-set! current-column 0 1))))))
+      (when (= (str (raw-key)) "]")
+        (swap! current-column inc)
+        (reset! current-column (mod @current-column max-modulo))
+        (compare-and-set! current-column 0 1)))))
 
 (defsketch mtc
   :title "Milk, Tea, Coffee"

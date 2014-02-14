@@ -11,7 +11,7 @@
 
 (def year-max (apply max (map first (rest milk-tea-coffee-data))))
 
-(def data-min  (apply min (mapcat rest (rest milk-tea-coffee-data))))
+(def data-min (apply min (mapcat rest (rest milk-tea-coffee-data))))
 
 (def data-max (apply max (mapcat rest (rest milk-tea-coffee-data))))
 
@@ -27,10 +27,9 @@
   (rect-mode :corners)
   (rect 50 60 (- (width) 50) (- (height) 60)))
 
-(defn draw-data-point [row]
-  (let [[year milk tea coffee] row]
-    (point (map-range year year-min year-max 50 (- (width) 50))
-           (map-range milk data-min data-max (- (height) 60) 60))))
+(defn draw-data-point [[year milk tea coffee]]
+  (point (map-range year year-min year-max 50 (- (width) 50))
+         (map-range milk data-min data-max (- (height) 60) 60)))
 
 (defn draw []
   (draw-plot-area)

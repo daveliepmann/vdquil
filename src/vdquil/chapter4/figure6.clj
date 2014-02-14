@@ -22,7 +22,6 @@
 (def data-min (apply min (mapcat rest (rest milk-tea-coffee-data))))
 (def volume-interval 5)
 (def data-first 0)
-
 (def data-max (* volume-interval
                  (ceil (/ (apply max (mapcat rest (rest milk-tea-coffee-data)))
                           volume-interval))))
@@ -44,7 +43,8 @@
   (text-size 20)
   (text-align :left :baseline)
   (text-font (create-font "Sans-Serif" 20))
-  (text (nth (first milk-tea-coffee-data) @current-column) plotx1 (- ploty1 10)))
+  (text (nth (first milk-tea-coffee-data) @current-column)
+        plotx1 (- ploty1 10)))
 
 (defn annotate-x-axis []
   ;; Draw year labels
@@ -106,10 +106,10 @@
       (do (swap! current-column dec)
           (reset! current-column (mod @current-column max-modulo))
           (compare-and-set! current-column 0 (- max-modulo 1)))
-      (if (= (str (raw-key)) "]")
-        (do (swap! current-column inc)
-            (reset! current-column (mod @current-column max-modulo))
-            (compare-and-set! current-column 0 1))))))
+      (when (= (str (raw-key)) "]")
+        (swap! current-column inc)
+        (reset! current-column (mod @current-column max-modulo))
+        (compare-and-set! current-column 0 1)))))
 
 (defsketch mtc
   :title "Milk, Tea, Coffee"

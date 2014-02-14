@@ -23,11 +23,10 @@
 (def year-interval 10)
 (def volume-interval 10)
 (def data-first 0)
+(def bar-width 4)
 (def data-max (* volume-interval
                  (ceil (/ (apply max (mapcat rest (rest milk-tea-coffee-data)))
                           volume-interval))))
-
-(def bar-width 4)
 
 (defn setup []
   (smooth))
@@ -44,7 +43,8 @@
   (text-size 20)
   (text-align :left :baseline)
   (text-font (create-font "Sans-Serif" 20))
-  (text (nth (first milk-tea-coffee-data) @current-column) plotx1 (- ploty1 10)))
+  (text (nth (first milk-tea-coffee-data) @current-column)
+        plotx1 (- ploty1 10)))
 
 (defn annotate-x-axis []
   ;; Draw year labels
@@ -66,7 +66,8 @@
       (stroke 0)
       (line plotx1 y (- plotx1 4) y)
       (text-align :right :center) ;; Center vertically
-      (if (= volume data-first) (text-align :right :bottom)) ;; Align the "0" label by the bottom
+      ;; Align the "0" label by the bottom:
+      (if (= volume data-first) (text-align :right :bottom)) 
       (text (str (ceil volume)) (- plotx1 10) y))))
 
 (defn draw-axis-labels []
@@ -75,7 +76,8 @@
   (text-leading 15)
   (text-align :center :center)
   (text "Gallons\nconsumer\nper capita" 50 (/ (+ ploty1 ploty2) 2))
-  (text (str (first (first milk-tea-coffee-data))) (/ (+ plotx1 plotx2) 2) (- (height) 25)))
+  (text (str (first (first milk-tea-coffee-data)))
+        (/ (+ plotx1 plotx2) 2) (- (height) 25)))
 
 (defn draw-data-bar [row]
   (stroke-weight 2)
@@ -105,10 +107,10 @@
       (do (swap! current-column dec)
           (reset! current-column (mod @current-column max-modulo))
           (compare-and-set! current-column 0 (- max-modulo 1)))
-      (if (= (str (raw-key)) "]")
-        (do (swap! current-column inc)
-            (reset! current-column (mod @current-column max-modulo))
-            (compare-and-set! current-column 0 1))))))
+      (when (= (str (raw-key)) "]")
+        (swap! current-column inc)
+        (reset! current-column (mod @current-column max-modulo))
+        (compare-and-set! current-column 0 1)))))
 
 (defsketch mtc
   :title "Milk, Tea, Coffee"

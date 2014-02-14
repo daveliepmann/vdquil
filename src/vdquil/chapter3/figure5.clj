@@ -16,15 +16,14 @@
   ;; to produce figure 3 or 4, comment out the following line:
   (color-mode :hsb))
 
-(defn create-ellipse [location]
-  (let [[abbrev [x y]] location
-        random-value (random-data abbrev)
-        radius 15
-        percent (norm random-value
-                      (apply min (map second random-data))
-                      (apply max (map second random-data)))
+(defn create-ellipse [[abbrev [x y]]]
+  (let [random-val (random-data abbrev)
+        radius     15
+        percent    (norm random-val
+                         (apply min (map second random-data))
+                         (apply max (map second random-data)))
         ;; ruddy green -- to produce figure 3, use #FF4422
-        low-color (hex-to-color "#296F34") 
+        low-color  (hex-to-color "#296F34") 
         ;; light blue -- to produce figure 3, use #4422CC
         high-color (hex-to-color "#61E2F0")]
     (fill (lerp-color low-color high-color percent))
