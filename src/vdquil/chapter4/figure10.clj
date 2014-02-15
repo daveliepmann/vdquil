@@ -8,7 +8,15 @@
         [vdquil.util]
         [vdquil.chapter4.ch4data]))
 
-(def current-column (atom 1))
+(def current-column (atom 0))
+
+(defn get-current-column
+  "Key handling function `switch-data-set` increments and decrements
+  `current-column`. Access to the atom goes through this function
+  because putting the modulus arithmetic in the keyhandler is
+  unavoidably messy around the edges."
+  []
+  (inc (mod @current-column (- (count (first milk-tea-coffee-data)) 1))))
 
 (def WIDTH 720)
 (def HEIGHT 405)
@@ -43,7 +51,7 @@
   (text-size 20)
   (text-align :left :baseline)
   (text-font (create-font "Sans-Serif" 20))
-  (text (nth (first milk-tea-coffee-data) @current-column)
+  (text (nth (first milk-tea-coffee-data) (get-current-column))
         plotx1 (- ploty1 10)))
 
 (defn annotate-x-axis []
@@ -74,7 +82,7 @@
         (line plotx1 y (- plotx1 4) y)
         (text-align :right :center) ;; Center vertically
         ;; Align the "0" label by the bottom:
-        (if (= volume data-first) (text-align :right :bottom))
+        (when (= volume data-first) (text-align :right :bottom))
         (text (str (ceil volume)) (- plotx1 10) y)))))
 
 (defn draw-axis-labels []
@@ -89,7 +97,7 @@
   (stroke (apply color (hex-to-rgb "#5679C1")))
   (let [[year milk tea coffee] row
         x (map-range year year-min year-max plotx1 plotx2)
-        y (map-range (nth row @current-column) data-min data-max ploty2 ploty1)]
+        y (map-range (nth row (get-current-column)) data-min data-max ploty2 ploty1)]
     (vertex x y)
     (when (< (dist (mouse-x) (mouse-y) x y) 3)
       (stroke-weight 10)
@@ -97,7 +105,7 @@
       (fill 0)
       (text-size 10)
       (text-align :center)
-      (text (str (format "%.2f" (double (nth row @current-column)))
+      (text (str (format "%.2f" (double (nth row (get-current-column))))
                  " (" (first row) ")")  x (- y 8)))
     ;; we must restore the line's stroke-weight and lack of fill due
     ;; to a bug which occurs when rolling over the last data point
@@ -116,15 +124,10 @@
   (end-shape))
 
 (defn switch-data-set []
-  (let [max-modulo (count (first milk-tea-coffee-data))]
-    (if (= (str (raw-key)) "[")
-      (do (swap! current-column dec)
-          (reset! current-column (mod @current-column max-modulo))
-          (compare-and-set! current-column 0 (- max-modulo 1)))
-      (when (= (str (raw-key)) "]")
-        (swap! current-column inc)
-        (reset! current-column (mod @current-column max-modulo))
-        (compare-and-set! current-column 0 1)))))
+  (condp = (raw-key)
+    \[ (swap! current-column dec)
+    \] (swap! current-column inc)
+    nil))
 
 (defsketch mtc
   :title "Milk, Tea, Coffee"
