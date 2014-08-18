@@ -4,13 +4,15 @@
 
 (defrecord Node [label x y dx dy fixed cnt])
 
-(defn new-node
+(defn make-node
   [label]
   (->Node label 
           (rand WIDTH) 
           (rand HEIGHT) 
           0.0 0.0 true 0.0))
 
+;; TODO I don't think this is necessary.  It just keeps a count of nodes.
+;; That can be gotten directly from the node set.  (?)
 (defn increment
   [node]
   (assoc node :cnt (inc (:cnt node))))
