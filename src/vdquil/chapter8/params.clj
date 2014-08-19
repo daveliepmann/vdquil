@@ -1,5 +1,5 @@
 (ns vdquil.chapter8.params)
 
-(def WIDTH 720.0)
-(def HEIGHT 405.0)
+(def ^:constant +width+ 720.0)
+(def ^:constant +height+ 405.0)
 

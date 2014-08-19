@@ -1,14 +1,14 @@
 (ns vdquil.chapter8.node
-  (use [quil.core]
-       [vdquil.chapter8.params]))
+  (:require [quil.core :as q]
+            [vdquil.chapter8.params :as p]))
 
 (defrecord Node [label x y dx dy fixed cnt])
 
 (defn make-node
   [label]
   (->Node label 
-          (rand WIDTH) 
-          (rand HEIGHT) 
+          (rand p/+width+) 
+          (rand p/+height+) 
           0.0 0.0 true 0.0))
 
 ;; TODO I don't think this is necessary.  It just keeps a count of nodes.
@@ -41,8 +41,8 @@
         new-node (if fixed
                    node
                    (assoc node 
-                          :x (constrain (+ x (constrain dx -5.0 5.0)) 0.0 WIDTH)
-                          :y (constrain (+ y (constrain dy -5.0 5.0)) 0.0 HEIGHT)))]
+                          :x (constrain (+ x (constrain dx -5.0 5.0)) 0.0 p/+width+)
+                          :y (constrain (+ y (constrain dy -5.0 5.0)) 0.0 p/+height+)))]
     (let [{:keys [dx dy]} new-node]
       (assoc new-node
              :dx (/ dx 2.0)
