@@ -1,15 +1,16 @@
-(ns vdquil.chapter8.node
+(ns vdquil.chapter8.fig2.node
   (:require [quil.core :as q]
-            [vdquil.chapter8.params :as p]))
+            [vdquil.chapter8.fig2.params :as p]))
 
-(defrecord Node [label x y dx dy fixed cnt])
+(defrecord Node [x y dx dy fixed label])
 
 (defn make-node
   [label]
-  (->Node label 
-          (rand p/+width+) 
-          (rand p/+height+) 
-          0.0 0.0 true 0.0))
+  (->Node 
+    (rand p/+width+) (rand p/+height+) 
+    0.0 0.0 
+    true
+    label))
 
 ;; TODO I don't think this is necessary.  It just keeps a count of nodes.
 ;; That can be gotten directly from the node set.  (?)

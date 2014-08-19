@@ -1,7 +1,7 @@
-(ns vdquil.chapter8.figure2
+(ns vdquil.chapter8.fig2.network
   (:require [quil.core :as q]
-            [vdquil.chapter8.node :as n]
-            [vdquil.chapter8.edge :as e]))
+            [vdquil.chapter8.fig2.node :as n]
+            [vdquil.chapter8.fig2.edge :as e]))
 
 (defn add-edge
   [from-label to-label nodes]
