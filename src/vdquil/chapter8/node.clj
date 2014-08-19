@@ -22,7 +22,7 @@
   [node nodes]
   (let [ddx 0
         ddy 0
-        dlen (/ (mag ddx ddy) 2)
+        dlen (/ (q/mag ddx ddy) 2)
         f (fn [n]
             (if (= n node)
               (if (pos? dlen)
@@ -41,8 +41,10 @@
         new-node (if fixed
                    node
                    (assoc node 
-                          :x (constrain (+ x (constrain dx -5.0 5.0)) 0.0 p/+width+)
-                          :y (constrain (+ y (constrain dy -5.0 5.0)) 0.0 p/+height+)))]
+                          :x (q/constrain (+ x (q/constrain dx -5.0 5.0)) 
+                                          0.0 p/+width+)
+                          :y (q/constrain (+ y (q/constrain dy -5.0 5.0))
+                                          0.0 p/+height+)))]
     (let [{:keys [dx dy]} new-node]
       (assoc new-node
              :dx (/ dx 2.0)
