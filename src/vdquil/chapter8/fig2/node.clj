@@ -48,8 +48,8 @@
 
         sum-normalized-diffs (fn [[ddx ddy]                ; quantities undergoing reducing
                                   {other-x :x other-y :y}] ; the next node to examine (other-x and other-y are n.x and n.y in node.pde)
-                               (let [x-diff (- x other-x) ; vx
-                                     y-diff (- y other-y) ; vy
+                               (let [x-diff (- x other-x) ; vx in node.pde
+                                     y-diff (- y other-y) ; vy in node.pde
                                      sum-sq-diffs (+ (* x-diff x-diff) (* y-diff y-diff))] ; lensq in node.pde
                                  (cond (== sum-sq-diffs 0) [(+ ddx (rand)) (+ ddy (rand))]      ; note we always return a 2-element seq
                                        (< sum-sq-diffs 10000) [(+ ddx (/ x-diff sum-sq-diffs))  ; since that's what the reducing fn
