@@ -3,32 +3,32 @@
             [vdquil.chapter8.fig2.node :as n]
             [vdquil.chapter8.fig2.edge :as e]))
 
-(defn add-edge
-  [from-label to-label nodes]
-  (conj nodes [(n/make-node from-label) (n/make-node to-label)]))
+;(defn add-edge
+;  [from-label to-label nodes]
+;  (conj nodes [(n/make-node from-label) (n/make-node to-label)]))
 
 (def edges 
-  (->> #{}
-       (add-edge "joe" "food")
-       (add-edge "joe" "dog")
-       (add-edge "joe" "tea")
-       (add-edge "joe" "cat")
-       (add-edge "joe" "table")
-       (add-edge "table" "plate")
-       (add-edge "plate" "food")
-       (add-edge "food" "mouse")
-       (add-edge "food" "dog")
-       (add-edge "food" "dog")
-       (add-edge "mouse" "cat")
-       (add-edge "table" "cup")
-       (add-edge "cup" "tea")
-       (add-edge "dog" "cat")
-       (add-edge "cup" "spoon")
-       (add-edge "plate" "fork")
-       (add-edge "dog" "flea1")
-       (add-edge "dog" "flea2")
-       (add-edge "flea1" "flea2")
-       (add-edge "plate" "knife")))
+  (into #{}
+        [(e/make-edge "joe" "food")
+         (e/make-edge "joe" "dog")
+         (e/make-edge "joe" "tea")
+         (e/make-edge "joe" "cat")
+         (e/make-edge "joe" "table")
+         (e/make-edge "table" "plate")
+         (e/make-edge "plate" "food")
+         (e/make-edge "food" "mouse")
+         (e/make-edge "food" "dog")
+         (e/make-edge "food" "dog")
+         (e/make-edge "mouse" "cat")
+         (e/make-edge "table" "cup")
+         (e/make-edge "cup" "tea")
+         (e/make-edge "dog" "cat")
+         (e/make-edge "cup" "spoon")
+         (e/make-edge "plate" "fork")
+         (e/make-edge "dog" "flea1")
+         (e/make-edge "dog" "flea2")
+         (e/make-edge "flea1" "flea2")
+         (e/make-edge "plate" "knife")]))
 
 (defn setup []
   (q/text-font (q/create-font "SanSerif" 10))
