@@ -12,9 +12,8 @@
     true
     label))
 
-;; TODO
-
-;; Description of algorithm for relax() in Node.pde
+;; RELAX
+;; Description of algorithm for relax() in Node.pde:
 ;; Use ddx, ddy as accumulator vars starting = 0.
 ;; For all *other* nodes:
 ;;  Calc diff tween their x, y coords and mine
@@ -34,24 +33,38 @@
 ;;    i.e. we push my dx and dy by ddx, ddy as proportion of the length of the vector they make
 ;; 
 ;;  Then the update() function adds dx and dy into x and y, constraining them to certain limits
-
+;;
+;; Overall strategy of this definition:
+;;   - Calculate ddx and ddy, each of which is a slightly complex sum, by `reduce`ing over all
+;;     other nodes using the internal function `sum-normalized-diffs` defined below.
+;;   - Then use ddx and ddy to calculate new values for dx and dy for this node, and return
+;;     a version of this node with the old dx and dy replaced with the new ones.
+;;   Everything except the last step is done within the `let` bindings.
 (defn relax
   [this-node all-nodes]
   (let [other-nodes (remove #(= this-node %) all-nodes)
+
         {x :x y :y dx :dx dy :dy} this-node
-        sum-normalized-diffs (fn [[ddx ddy] {other-x :x other-y :y}] ; other-x = n.x, etc.
+
+        sum-normalized-diffs (fn [[ddx ddy]                ; quantities undergoing reducing
+                                  {other-x :x other-y :y}] ; the next node to examine (other-x and other-y are n.x and n.y in node.pde)
                                (let [x-diff (- x other-x) ; vx
                                      y-diff (- y other-y) ; vy
-                                     sum-sq-diffs (+ (* x-diff x-diff) (* y-diff y-diff))] ; lensq
-                                 (cond (== sum-sq-diffs 0) [(+ ddx (rand)) (+ ddy (rand))]
-                                       (< sum-sq-diffs 10000) [(+ ddx (/ x-diff sum-sq-diffs)) 
-                                                               (+ ddy (/ y-diff sum-sq-diffs))]
-                                       :else [ddx ddy])))
+                                     sum-sq-diffs (+ (* x-diff x-diff) (* y-diff y-diff))] ; lensq in node.pde
+                                 (cond (== sum-sq-diffs 0) [(+ ddx (rand)) (+ ddy (rand))]      ; note we always return a 2-element seq
+                                       (< sum-sq-diffs 10000) [(+ ddx (/ x-diff sum-sq-diffs))  ; since that's what the reducing fn
+                                                               (+ ddy (/ y-diff sum-sq-diffs))] ; (i.e. this one) is looking for
+                                       :else [ddx ddy]))) 
+
         [ddx ddy] (reduce sum-normalized-diffs [0 0] other-nodes)
+
         dlen (/ (q/mag ddx ddy) 2)
+
         new-dx (if (<= dlen 0) dx (+ dx (/ ddx dlen)))
         new-dy (if (<= dlen 0) dy (+ dy (/ ddy dlen)))]
+
     (assoc this-node :dx new-dx :dy new-dy)))
+
 
 (defn update
   [node]
