@@ -13,43 +13,45 @@
     label))
 
 ;; TODO
+
+;; Description of algorithm for relax() in Node.pde
+;; Use ddx, ddy as accumulator vars starting = 0.
+;; For all *other* nodes:
+;;  Calc diff tween their x, y coords and mine
+;;  Sum the squares of the two differences (Pyth thm without root)
+;;  call this lensq.
+;;  if the sum of squares = 0 (i.e. the other node is on top of me)
+;;    add random positive increments to ddx and ddy
+;;  or if it's > 0, but < 100^2
+;;    then sum into ddx, ddy the diffs vx, vy, normalized by dividing by the sum of squares lensq
+;;  and if it.s > 100^2, leave ddx, ddy alone.
+;;  Then when you're done with the loop through other nodes
+;;    calculate half the length of the difference vector <ddx,ddy> using mag().
+;;    call this dlen.
+;;    if this dlen is nonzero,
+;;    then increment my dx by ddx/dlen, and dy by ddy/dlen
+;;    node ddx and ddy could be negative.
+;;    i.e. we push my dx and dy by ddx, ddy as proportion of the length of the vector they make
+;; 
+;;  Then the update() function adds dx and dy into x and y, constraining them to certain limits
+
 (defn relax
-  [this-node nodes]
-  (let [ddx 0
-        ddy 0
-        {x :x y :y} this-node
-        f1 (fn [{nx :x ny :y
-                 ddx :ddx ddy :ddy
-                 :as node}]
-             (if (= this-node node)
-               node
-               (let [vx (- x nx)
-                     vy (- y ny)
-                     lensq (+ (* vx vx) (vy vy))]
-                 (if (== lensq 0)
-                   (assoc node 
-                          :ddx (+ ddx (rand 1))  ; pass this temp info 
-                          :ddy (+ ddy (rand 1))) ;  via each node
-                   (if (< lensq 10000)
-                     (assoc node 
-                            :ddx (+ ddx (/ vx lensq)) 
-                            :ddy (+ ddy (/ vy lensq)))
-                     ; TODO NOT RIGHT
-
-
-
-
-
-              (if (pos? dlen)
-                (assoc n 
-                       :dx (+ (:dx n) (/ ddx dlen))
-                       :dy (+ (:dy n) (/ ddy dlen)))
-                n)
-              n ;; TODO add contents of big inner loop HERE
-              ))]
-    (map f nodes)))
-
+  [this-node all-nodes]
+  (let [other-nodes (remove #(= this-node %) all-nodes)
+        {x :x y :y dx :dx dy :dy} this-node
+        sum-normalized-diffs (fn [[ddx ddy] {other-x :x other-y :y}] ; other-x = n.x, etc.
+                               (let [x-diff (- x other-x) ; vx
+                                     y-diff (- y other-y) ; vy
+                                     sum-sq-diffs (+ (* x-diff x-diff) (* y-diff y-diff))] ; lensq
+                                 (cond (== sum-sq-diffs 0) [(+ ddx (rand)) (+ ddy (rand))]
+                                       (< sum-sq-diffs 10000) [(+ ddx (/ x-diff sum-sq-diffs)) 
+                                                               (+ ddy (/ y-diff sum-sq-diffs))]
+                                       :else [ddx ddy])))
+        [ddx ddy] (reduce sum-normalized-diffs [0 0] other-nodes)
         dlen (/ (q/mag ddx ddy) 2)
+        new-dx (if (<= dlen 0) dx (+ dx (/ ddx dlen)))
+        new-dy (if (<= dlen 0) dy (+ dy (/ ddy dlen)))]
+    (assoc this-node :dx new-dx :dy new-dy)))
 
 (defn update
   [node]
@@ -66,4 +68,11 @@
              :dx (/ dx 2.0)
              :dy (/ dy 2.0)))))
 
-
+(defn draw
+  [{x :x y :y label :label}] ; a node
+  (q/fill p/node-color)
+  (q/stroke 0)
+  (q/stroke-weight 0.5)
+  (q/ellipse x y 5 5)
+  (q/text-align q/CENTER)
+  (q/text label x y))
