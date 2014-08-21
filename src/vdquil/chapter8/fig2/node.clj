@@ -41,7 +41,9 @@
 ;;     a version of this node with the old dx and dy replaced with the new ones.
 ;;   Everything except the last step is done within the `let` bindings.
 (defn relax
-  [this-node all-nodes]
+  "Returns a version of this-node with new values for dx and dy
+  that reflect relaxation with respect to the other nodes."
+  [all-nodes this-node]
   (let [other-nodes (remove #(= this-node %) all-nodes)
 
         {x :x y :y dx :dx dy :dy} this-node
@@ -83,9 +85,9 @@
 
 (defn draw
   [{x :x y :y label :label}] ; a node
-  (q/fill p/node-color)
+  (q/fill p/+node-color+)
   (q/stroke 0)
   (q/stroke-weight 0.5)
-  (q/ellipse x y 5 5)
-  (q/text-align q/CENTER)
+  (q/ellipse x y 25 25)
+  (q/text-align :center)
   (q/text label x y))
