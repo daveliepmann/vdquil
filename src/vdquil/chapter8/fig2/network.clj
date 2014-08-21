@@ -45,7 +45,7 @@
   (q/smooth))
 
 (defn draw []
-  (q/background 255)
+  (q/background 255) ; white
   ;; map relax over edges
   ;; doseq draw over edges
   (doseq [node (map n/update (map (partial n/relax nodes) nodes))]
