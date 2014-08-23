@@ -44,10 +44,12 @@
   (q/text-font (q/create-font "SansSerif" 10))
   (q/smooth))
 
+;; BUG(?) NODES AND EDGES AREN'T UPDATED FOR NEXT ROUND.
+;; Maybe need to use atom, etc.
 (defn draw []
   (q/background 255) ; white
-  ;; map relax over edges
-  ;; doseq draw over edges
+  (doseq [edge (map e/relax edges)]
+    (e/draw edge))
   (doseq [node (map n/update (map (partial n/relax nodes) nodes))]
     (n/draw node)))
 
