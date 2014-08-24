@@ -22,14 +22,14 @@
       edge
       (let [f (/ (- len d) (* d 3))
             dx (* f vx)
-            dy (* f vy)]
-        (assoc edge 
-               :from (assoc from 
+            dy (* f vy)
+               new-from (assoc from    ; BUG: This should be the same as what's in nodes, but it's not, now.
                             :dx (- (:dx from) dx)
                             :dy (- (:dy from) dy))
-               :to   (assoc to 
+               new-to   (assoc to 
                             :dx (+ (:dx to) dx)
-                            :dy (+ (:dy to) dy)))))))
+                            :dy (+ (:dy to) dy))]
+        (assoc edge :from new-from :to new-to)))))
 
 (defn draw
   [edge]

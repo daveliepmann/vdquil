@@ -9,7 +9,7 @@
   (->Node 
     (rand p/+width+) (rand p/+height+) 
     0.0 0.0 
-    true
+    false
     label))
 
 ;; RELAX

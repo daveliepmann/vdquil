@@ -4,6 +4,9 @@
             [vdquil.chapter8.fig2.edge :as e]
             [vdquil.chapter8.fig2.params :as p]))
 
+(def nodes (atom []))
+(def edges (atom []))
+
 (defn add-nodes-and-edge
   "Given two strings from-label and two-label, and a pair of
   sets representing nodes and edges, return a new pair of nodes
@@ -16,7 +19,8 @@
 
 ;; first collect the complete sets of nodes and edges, and then
 ;; use them to def top-level symbols.
-(let [[nodes edges] (->> [#{} #{}]
+(defn init-graph []
+  (let [[nods edgs] (->> [#{} #{}]
                       (add-nodes-and-edge "joe" "food")
                       (add-nodes-and-edge "joe" "dog")
                       (add-nodes-and-edge "joe" "tea")
@@ -37,21 +41,26 @@
                       (add-nodes-and-edge "dog" "flea2")
                       (add-nodes-and-edge "flea1" "flea2")
                       (add-nodes-and-edge "plate" "knife"))]
-  (def nodes nodes)
-  (def edges edges))
+    (reset! nodes nods)
+    (reset! edges edgs)))
 
 (defn setup []
   (q/text-font (q/create-font "SansSerif" 10))
-  (q/smooth))
+  (q/smooth)
+  (init-graph))
 
-;; BUG(?) NODES AND EDGES AREN'T UPDATED FOR NEXT ROUND.
-;; Maybe need to use atom, etc.
 (defn draw []
   (q/background 255) ; white
-  (doseq [edge (map e/relax edges)]
+
+  (swap! edges #(map e/relax %))
+  (swap! nodes #(map n/update (map (partial n/relax @nodes) %)))
+
+  (doseq [edge @edges]
     (e/draw edge))
-  (doseq [node (map n/update (map (partial n/relax nodes) nodes))]
+
+  (doseq [node @nodes]
     (n/draw node)))
+
 
 (q/defsketch ch8-fig2
   :title "Graph layout example"
