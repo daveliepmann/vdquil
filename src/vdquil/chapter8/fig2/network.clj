@@ -16,12 +16,13 @@
   (let [from-node (n/make-node from-label)
         to-node   (n/make-node to-label)]
     [(-> nodes (conj from-node) (conj to-node))      ; add nodes if new
-     (conj edges (e/make-edge from-node to-node))])) ; add edge if new
+     (conj edges (e/make-edge from-node to-node))])) ; add edge, which is assumed new
+                  ;; TODO from-node and to-node here should be ids or indexes
 
 ;; first collect the complete sets of nodes and edges, and then
 ;; use them to def top-level symbols.
 (defn init-graph []
-  (let [[nodes edges] (->> [#{} #{}]
+  (let [[nodes edges] (->> [(sorted-set) []]  ; nodes must be a sorted-set; edges must be sequential?
                       (add-nodes-and-edge "joe" "food")
                       (add-nodes-and-edge "joe" "dog")
                       (add-nodes-and-edge "joe" "tea")
@@ -49,18 +50,21 @@
   (q/smooth)
   (init-graph)) ; passed to update as state
 
+
 (defn update [state]
   (let [nodes (:nodes state)
-        edges (:edges state)]
-    {:nodes (map n/update (map (partial n/relax nodes) nodes))
-     :edges (map e/relax edges)}))
+        edges (:edges state)] ; edges never changes, but we pass it around anyway
+    (assoc state 
+           :nodes (apply sorted-set (map n/update 
+                                         (map (partial n/relax nodes) 
+                                              (e/relax-all-endnodes edges nodes)))))))
 
 (defn draw [state]
   (q/background 255) ; white
   (let [nodes (:nodes state)
         edges (:edges state)]
-  (doseq [edge edges] (e/draw edge))
-  (doseq [node nodes] (n/draw node)))
+    (doseq [edge edges] (e/draw edge))
+    (doseq [node nodes] (n/draw node))))
 
 
 (q/defsketch ch8-fig2
