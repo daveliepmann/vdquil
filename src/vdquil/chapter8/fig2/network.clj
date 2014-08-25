@@ -1,11 +1,12 @@
 (ns vdquil.chapter8.fig2.network
   (:require [quil.core :as q]
+            [quil.middleware :as m]
             [vdquil.chapter8.fig2.node :as n]
             [vdquil.chapter8.fig2.edge :as e]
             [vdquil.chapter8.fig2.params :as p]))
 
-(def nodes (atom []))
-(def edges (atom []))
+;; NOTE: This uses Quil's "functional mode", in which a state variable is
+;; passed between the top-level procedures setup, update, and draw.
 
 (defn add-nodes-and-edge
   "Given two strings from-label and two-label, and a pair of
@@ -20,7 +21,7 @@
 ;; first collect the complete sets of nodes and edges, and then
 ;; use them to def top-level symbols.
 (defn init-graph []
-  (let [[nods edgs] (->> [#{} #{}]
+  (let [[nodes edges] (->> [#{} #{}]
                       (add-nodes-and-edge "joe" "food")
                       (add-nodes-and-edge "joe" "dog")
                       (add-nodes-and-edge "joe" "tea")
@@ -41,29 +42,31 @@
                       (add-nodes-and-edge "dog" "flea2")
                       (add-nodes-and-edge "flea1" "flea2")
                       (add-nodes-and-edge "plate" "knife"))]
-    (reset! nodes nods)
-    (reset! edges edgs)))
+    {:nodes nodes :edges edges}))
 
 (defn setup []
   (q/text-font (q/create-font "SansSerif" 10))
   (q/smooth)
-  (init-graph))
+  (init-graph)) ; passed to update as state
 
-(defn draw []
+(defn update [state]
+  (let [nodes (:nodes state)
+        edges (:edges state)]
+    {:nodes (map n/update (map (partial n/relax nodes) nodes))
+     :edges (map e/relax edges)}))
+
+(defn draw [state]
   (q/background 255) ; white
-
-  (swap! edges #(map e/relax %))
-  (swap! nodes #(map n/update (map (partial n/relax @nodes) %)))
-
-  (doseq [edge @edges]
-    (e/draw edge))
-
-  (doseq [node @nodes]
-    (n/draw node)))
+  (let [nodes (:nodes state)
+        edges (:edges state)]
+  (doseq [edge edges] (e/draw edge))
+  (doseq [node nodes] (n/draw node)))
 
 
 (q/defsketch ch8-fig2
   :title "Graph layout example"
+  :size [p/+width+ p/+height+]
   :setup setup
   :draw draw
-  :size [p/+width+ p/+height+])
+  :update update
+  :middleware [m/fun-mode])
