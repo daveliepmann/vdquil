@@ -12,17 +12,16 @@
   "Given two strings from-label and two-label, and a pair of
   sets representing nodes and edges, return a new pair of nodes
   and edges with zero or more new nodes and zero or one new edges."
-  [from-label to-label [nodes edges]]
+  [from-label to-label [nodes-map edges]]
   (let [from-node (n/make-node from-label)
         to-node   (n/make-node to-label)]
-    [(-> nodes (conj from-node) (conj to-node))      ; add nodes if new
-     (conj edges (e/make-edge from-node to-node))])) ; add edge, which is assumed new
-                  ;; TODO from-node and to-node here should be ids or indexes
+    [(assoc nodes-map from-label from-node to-label to-node) ; this might replace a node with a functionally identical node (Feed the gc!)
+     (conj edges (e/make-edge from-label to-label))]))   ; add edge, which is assumed new
 
 ;; first collect the complete sets of nodes and edges, and then
 ;; use them to def top-level symbols.
 (defn init-graph []
-  (let [[nodes edges] (->> [(sorted-set) []]  ; nodes must be a sorted-set; edges must be sequential?
+  (let [[nodes-map edges] (->> [{} []]
                       (add-nodes-and-edge "joe" "food")
                       (add-nodes-and-edge "joe" "dog")
                       (add-nodes-and-edge "joe" "tea")
@@ -31,8 +30,7 @@
                       (add-nodes-and-edge "table" "plate")
                       (add-nodes-and-edge "plate" "food")
                       (add-nodes-and-edge "food" "mouse")
-                      (add-nodes-and-edge "food" "dog")
-                      (add-nodes-and-edge "food" "dog")
+                      (add-nodes-and-edge "food" "dog") ; there is a duplicate edge in the Java source, but not here
                       (add-nodes-and-edge "mouse" "cat")
                       (add-nodes-and-edge "table" "cup")
                       (add-nodes-and-edge "cup" "tea")
@@ -43,7 +41,7 @@
                       (add-nodes-and-edge "dog" "flea2")
                       (add-nodes-and-edge "flea1" "flea2")
                       (add-nodes-and-edge "plate" "knife"))]
-    {:nodes nodes :edges edges}))
+    {:nodes-map nodes-map :edges edges}))
 
 (defn setup []
   (q/text-font (q/create-font "SansSerif" 10))
@@ -52,19 +50,22 @@
 
 
 (defn update [state]
-  (let [nodes (:nodes state)
+  (let [nodes-map (:nodes-map state)
         edges (:edges state)] ; edges never changes, but we pass it around anyway
     (assoc state 
-           :nodes (apply sorted-set (map n/update 
-                                         (map (partial n/relax nodes) 
-                                              (e/relax-all-endnodes edges nodes)))))))
+           :nodes-map (apply merge 
+                             (map n/update 
+                                  (map (partial n/relax nodes-map) 
+                                       (vals 
+                                         (e/relax-all-endnodes edges nodes-map))))))))
 
 (defn draw [state]
   (q/background 255) ; white
-  (let [nodes (:nodes state)
+  (let [nodes-map (:nodes-map state)
         edges (:edges state)]
-    (doseq [edge edges] (e/draw edge))
-    (doseq [node nodes] (n/draw node))))
+    (doseq [edge edges] (e/draw edge nodes-map))
+    (doseq [node (vals nodes-map)] 
+      (n/draw node))))
 
 
 (q/defsketch ch8-fig2

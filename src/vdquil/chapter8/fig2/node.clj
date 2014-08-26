@@ -41,12 +41,12 @@
 ;;     a version of this node with the old dx and dy replaced with the new ones.
 ;;   Everything except the last step is done within the `let` bindings.
 (defn relax
-  "Returns a version of this-node with new values for dx and dy
+  "Returns a version of node with new values for dx and dy
   that reflect relaxation with respect to the other nodes."
-  [all-nodes this-node]
-  (let [other-nodes (remove #(= this-node %) all-nodes)
+  [nodes-map node]
+  (let [other-nodes (dissoc nodes-map (:label node))
 
-        {x :x y :y dx :dx dy :dy} this-node
+        {x :x y :y dx :dx dy :dy} node
 
         sum-normalized-diffs (fn [[ddx ddy]                ; quantities undergoing reducing
                                   {other-x :x other-y :y}] ; the next node to examine (other-x and other-y are n.x and n.y in node.pde)
@@ -58,14 +58,14 @@
                                                                (+ ddy (/ y-diff sum-sq-diffs))] ; (i.e. this one) is looking for
                                        :else [ddx ddy]))) 
 
-        [ddx ddy] (reduce sum-normalized-diffs [0 0] other-nodes)
+        [ddx ddy] (reduce sum-normalized-diffs [0 0] (vals other-nodes))
 
         dlen (/ (q/mag ddx ddy) 2)
 
         new-dx (if (<= dlen 0) dx (+ dx (/ ddx dlen)))
         new-dy (if (<= dlen 0) dy (+ dy (/ ddy dlen)))]
 
-    (assoc this-node :dx new-dx :dy new-dy)))
+    (assoc node :dx new-dx :dy new-dy)))
 
 
 (defn update
@@ -79,9 +79,10 @@
                           :y (q/constrain (+ y (q/constrain dy -5.0 5.0))
                                           0.0 p/+height+)))]
     (let [{:keys [dx dy]} new-node]
-      (assoc new-node
-             :dx (/ dx 2.0)
-             :dy (/ dy 2.0)))))
+      {(:label new-node)
+       (assoc new-node
+              :dx (/ dx 2.0)
+              :dy (/ dy 2.0))})))
 
 (defn draw
   [{x :x y :y label :label}] ; a node
