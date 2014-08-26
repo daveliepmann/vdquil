@@ -1,4 +1,4 @@
-(ns vdquil.chapter8.fig2.network
+(ns vdquil.chapter8.fig2.graph
   (:require [quil.core :as q]
             [quil.middleware :as m]
             [vdquil.chapter8.fig2.node :as n]
@@ -44,7 +44,7 @@
     {:nodes-map nodes-map :edges edges}))
 
 (defn setup []
-  (q/text-font (q/create-font "SansSerif" 10))
+  (q/text-font (q/create-font "SansSerif" 20))
   (q/smooth)
   (init-graph)) ; passed to update as state
 
@@ -60,7 +60,7 @@
                                          (e/relax-all-endnodes edges nodes-map))))))))
 
 (defn draw [state]
-  (q/background 255) ; white
+  (q/background 200)
   (let [nodes-map (:nodes-map state)
         edges (:edges state)]
     (doseq [edge edges] (e/draw edge nodes-map))
