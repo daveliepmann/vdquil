@@ -44,7 +44,7 @@
     {:nodes-map nodes-map :edges edges}))
 
 (defn setup []
-  (q/text-font (q/create-font "SansSerif" 20))
+  (q/text-font (q/create-font "SansSerif" 14))
   (q/smooth)
   (init-graph)) ; passed to update as state
 

@@ -87,8 +87,9 @@
 (defn draw
   [{x :x y :y label :label}] ; a node
   (apply q/fill p/node-color)
-  (q/stroke 0)
+  (apply q/stroke p/edge-color)
   (q/stroke-weight 0.5)
   (q/ellipse x y 25 25)
   (q/text-align :center)
+  (apply q/fill p/text-color)
   (q/text label x y))
